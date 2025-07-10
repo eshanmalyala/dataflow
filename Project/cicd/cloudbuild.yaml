@@ -37,12 +37,12 @@ steps:
       - '-c'
       - |
         BUCKET=$(cat /workspace/BKT_NAME.txt)
-        echo "Using bucket: $BUCKET"
-        gcloud dataflow flex-template build gs://$BUCKET/templates/streaming_template.json \
+        echo "Using bucket: $$BUCKET"
+        gcloud dataflow flex-template build gs://$$BUCKET/templates/streaming_template.json \
           --image europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii \
           --sdk-language PYTHON \
           --metadata-file metadata.json \
-          --temp-location gs://$BUCKET/tmp
+          --temp-location gs://$$BUCKET/tmp
     dir: 'dataflow/streaming'
 
   # Step 5: Upload Composer DAGs to Composer bucket
