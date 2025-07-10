@@ -7,7 +7,7 @@ variable "region" {
 }
 
 variable "bucket_name" {
-  default = "getwellsoon-bucket"
+  default = "getwellsoon-bucket-demo"
 }
 
 variable "dataset_id" {
