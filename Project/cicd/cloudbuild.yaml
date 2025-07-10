@@ -1,1 +1,44 @@
-#
+steps:
+  # Step 1: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'dataflow/streaming'
+    args:
+      [
+        'build', '-t',
+        'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii',
+        '.'
+      ]
+
+  # Step 2: Push Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii'
+      ]
+
+  # Step 3: Build Flex Template
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud dataflow flex-template build gs://getwellsoon-bucket/templates/streaming_template.json \
+          --image europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii \
+          --sdk-language PYTHON \
+          --metadata-file dataflow/streaming/metadata.json \
+          --temp-location gs://getwellsoon-bucket/tmp
+
+  # Step 4: Launch Streaming Dataflow Job
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud dataflow flex-template run "streaming-pii-job-$(date +%Y%m%d-%H%M%S)" \
+          --template-file-gcs-location gs://getwellsoon-bucket/templates/streaming_template.json \
+          --region europe-west1 \
+          --parameters input_subscription=projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub,\
+output_table=gcp-agent-garden:getwellsoon_dataset.customer_data
+
+timeout: 1800s
