@@ -69,9 +69,15 @@ gcloud projects add-iam-policy-binding gcp-agent-garden \
   --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
   --role="roles/storage.objectAdmin"
 
+ gcloud projects add-iam-policy-binding gcp-agent-garden
+--member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com"  --role="roles/iam.serviceAccounts.actAs"
+
+
+
 gcloud iam service-accounts add-iam-policy-binding getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com \
   --member="user:rajasekhar.malyala@capgemini.com" \
   --role="roles/iam.serviceAccountUser"
+  
  gcloud iam service-accounts add-iam-policy-binding getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com \
   --member="user:rajasekhar.malyala@capgemini.com" \
   --role="roles/iam.serviceAccounts.actAs"
