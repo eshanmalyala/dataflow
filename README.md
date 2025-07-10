@@ -288,3 +288,16 @@ ERROR: build step 1 "gcr.io/cloud-builders/docker" failed: step exited with non-
 
 BUILD FAILURE: Build step failure: build step 1 "gcr.io/cloud-builders/docker" failed: step exited with non-zero status: 1
 ERROR: (gcloud.builds.submit) build d2900343-e089-4da1-a8d1-61994517cd3e completed with status "FAILURE"
+
+
+# issue 8
+
+{
+insertId: "1idzz8xc2xy"
+labels: {4}
+logName: "projects/gcp-agent-garden/logs/dataflow.googleapis.com%2Fjob-message"
+receiveTimestamp: "2025-07-10T14:49:53.909569663Z"
+resource: {2}
+severity: "ERROR"
+textPayload: "Error occurred in the launcher container: could not determine py file from env"
+timestamp: "2025-07-10T14:49:52.160761384Z"
