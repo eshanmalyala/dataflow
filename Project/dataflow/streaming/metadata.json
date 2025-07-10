@@ -1,16 +1,18 @@
 {
   "name": "dataflow-streaming-pii",
-  "description": "Streaming pipeline with PII masking",
+  "description": "Streaming Dataflow Flex Template for PII masking",
   "parameters": [
     {
       "name": "input_subscription",
       "label": "Input Pub/Sub subscription",
-      "help_text": "Pub/Sub subscription to read messages from"
+      "helpText": "The full Pub/Sub subscription path. E.g., projects/<project-id>/subscriptions/<sub-name>",
+      "paramType": "TEXT"
     },
     {
       "name": "output_table",
       "label": "Output BigQuery table",
-      "help_text": "BigQuery table to write output to"
+      "helpText": "The output BigQuery table. E.g., <project-id>:<dataset>.<table>",
+      "paramType": "TEXT"
     }
   ]
 }
