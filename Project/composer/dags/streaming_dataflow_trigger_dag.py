@@ -7,10 +7,11 @@ REGION = "europe-west1"
 TEMPLATE_GCS_PATH = "gs://getwellsoon-bucket-demo/templates/streaming_template.json"
 SUBSCRIPTION = f"projects/{PROJECT_ID}/subscriptions/getwellsoon-topic-sub"
 BQ_TABLE = f"{PROJECT_ID}:getwellsoon_dataset.customer_data"
+SERVICE_ACCOUNT = "getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com"  
 
 with models.DAG(
     dag_id="trigger_streaming_dataflow_job",
-    schedule_interval=None,  # Trigger manually or via external event
+    schedule_interval=None,  
     start_date=datetime(2023, 1, 1),
     catchup=False,
     tags=["streaming", "dataflow", "pii"],
@@ -28,6 +29,9 @@ with models.DAG(
                     "input_subscription": SUBSCRIPTION,
                     "output_table": BQ_TABLE
                 },
+                "environment": {
+                    "serviceAccountEmail": SERVICE_ACCOUNT  
+                }
             }
         },
     )
