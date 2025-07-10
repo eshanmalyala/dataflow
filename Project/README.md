@@ -48,3 +48,20 @@ Then trigger the pipeline:
 ```bash
   gcloud builds submit --config=cicd/cloudbuild.yaml
 ```
+# Use a custom Dataflow service account
+
+gcloud iam service-accounts create getwellsoon-dataflow-service \
+  --display-name "Dataflow Service Account"
+
+gcloud projects add-iam-policy-binding gcp-agent-garden \
+  --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
+  --role="roles/dataflow.worker"
+
+gcloud projects add-iam-policy-binding gcp-agent-garden \
+  --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
+  --role="roles/storage.objectAdmin"
+
+gcloud iam service-accounts add-iam-policy-binding getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com \
+  --member="user:rajasekhar.malyala@capgemini.com" \
+  --role="roles/iam.serviceAccountUser"
+
