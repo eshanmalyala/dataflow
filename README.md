@@ -249,3 +249,10 @@ Failed to start the VM, launcher-2025071003550017293866963799895596, used for la
  Message: Invalid value for field 'resource.networkInterfaces[0].subnetwork': 'subnetwork=regions/europe-west1/subnetworks/mcd-eu-west1-subnet1'. The URL is malformed.
  HTTP Code: 400.
 
+
+# issue 6 
+
+
+2025-07-10 19:33:35.338 IST
+docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: exec: "/opt/google/dataflow/python_template_launcher": stat /opt/google/dataflow/python_template_launcher: no such file or directory: unknown.
+
