@@ -8,32 +8,21 @@ ERROR: (gcloud.builds.submit) INVALID_ARGUMENT: generic::invalid_argument: inval
   "$$"  In cloud build args , variables like $BUCKET are missinterprted unless escaped 
    $$BUCKET tells cloud build this is a bash variable , don't try to substitute it
 
-### issue 
+### issue 2
 
-Step #0: ╷
-Step #0: │ Error: Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=getwellsoon-topic).
-Step #0: │ 
-Step #0: │   with google_pubsub_topic.topic,
-Step #0: │   on main.tf line 6, in resource "google_pubsub_topic" "topic":
-Step #0: │    6: resource "google_pubsub_topic" "topic" {
-Step #0: │ 
-Step #0: ╵
-Step #0: ╷
-Step #0: │ Error: googleapi: Error 412: Request violates constraint 'constraints/storage.uniformBucketLevelAccess', conditionNotMet
-Step #0: │ 
-Step #0: │   with google_storage_bucket.dataflow_template,
-Step #0: │   on main.tf line 15, in resource "google_storage_bucket" "dataflow_template":
-Step #0: │   15: resource "google_storage_bucket" "dataflow_template" {
-Step #0: │ 
-Step #0: ╵
-Step #0: ╷
-Step #0: │ Error: Error creating Dataset: googleapi: Error 409: Already Exists: Dataset gcp-agent-garden:getwellsoon_dataset, duplicate
-Step #0: │ 
-Step #0: │   with google_bigquery_dataset.dataset,
-Step #0: │   on main.tf line 20, in resource "google_bigquery_dataset" "dataset":
-Step #0: │   20: resource "google_bigquery_dataset" "dataset" {
-Step #0: │ 
-Step #0: ╵
-Finished Step #0
+
+Step #1: Step 2/6 : WORKDIR /app
+Step #1:  Running in 678ff740b9ae
+Step #1: Removing intermediate container 678ff740b9ae
+Step #1:  489fb61c870e
+Step #1: Step 3/6 : COPY streaming_pipeline.py .
+Step #1:  755e14d4c81b
+Step #1: Step 4/6 : COPY ../common/masking_utils.py common/masking_utils.py
+Step #1: COPY failed: forbidden path outside the build context: ../common/masking_utils.py ()
+Finished Step #1
 ERROR
-ERROR: build step 0 "hashicorp/terraform:1.6.6" failed: step exited with non-zero status: 1
+ERROR: build step 1 "gcr.io/cloud-builders/docker" failed: step exited with non-zero status: 1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+BUILD FAILURE: Build step failure: build step 1 "gcr.io/cloud-builders/docker" failed: step exited with non-zero status: 1
+ERROR: (gcloud.builds.submit) build e61660f6-09a2-4950-9f04-8d2629e652d1 completed with status "FAILURE"
