@@ -13,10 +13,11 @@ steps:
 
   # Step 2: Build Docker image for Dataflow Streaming Flex Template
   - name: 'gcr.io/cloud-builders/docker'
-    dir: 'dataflow/streaming'
+    dir: '.'
     args:
       [
         'build', 
+        '-f', 'dataflow/streaming/Dockerfile',
         '-t',
         'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii',
         '.'
