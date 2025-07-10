@@ -1,11 +1,11 @@
-FROM gcr.io/dataflow-templates-base/python3-template-launcher-base
+FROM apache/beam_python3.11_sdk:latest
 
-WORKDIR /dataflow/template
+WORKDIR /app
 
-COPY streaming_pipeline.py .
-COPY ../common/masking_utils.py common/masking_utils.py
+COPY dataflow/streaming/streaming_pipeline.py .
+COPY dataflow/common/masking_utils.py common/masking_utils.py
 
 RUN pip install --upgrade pip && \
     pip install google-cloud-pubsub google-cloud-bigquery
 
-ENTRYPOINT ["/opt/google/dataflow/python_template_launcher"]
+ENTRYPOINT ["python", "streaming_pipeline.py"]
