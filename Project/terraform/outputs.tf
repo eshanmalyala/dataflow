@@ -9,3 +9,6 @@ output "artifact_registry" {
 output "bq_dataset" {
   value = google_bigquery_dataset.dataset.dataset_id
 }
+output "dataflow_template_bucket" {
+  value = google_storage_bucket.dataflow_template.name
+}
