@@ -8,22 +8,32 @@ ERROR: (gcloud.builds.submit) INVALID_ARGUMENT: generic::invalid_argument: inval
   "$$"  In cloud build args , variables like $BUCKET are missinterprted unless escaped 
    $$BUCKET tells cloud build this is a bash variable , don't try to substitute it
 
-### issue 2
- Acquiring state lock. This may take a few moments...
+### issue 
+
 Step #0: ╷
-Step #0: │ Error: Reference to undeclared resource
+Step #0: │ Error: Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=getwellsoon-topic).
 Step #0: │ 
-Step #0: │   on outputs.tf line 14, in output "dataflow_template_bucket":
-Step #0: │   14:   value = google_storage_bucket.dataflow_template.name
+Step #0: │   with google_pubsub_topic.topic,
+Step #0: │   on main.tf line 6, in resource "google_pubsub_topic" "topic":
+Step #0: │    6: resource "google_pubsub_topic" "topic" {
 Step #0: │ 
-Step #0: │ A managed resource "google_storage_bucket" "dataflow_template" has not been
-Step #0: │ declared in the root module.
+Step #0: ╵
+Step #0: ╷
+Step #0: │ Error: googleapi: Error 412: Request violates constraint 'constraints/storage.uniformBucketLevelAccess', conditionNotMet
+Step #0: │ 
+Step #0: │   with google_storage_bucket.dataflow_template,
+Step #0: │   on main.tf line 15, in resource "google_storage_bucket" "dataflow_template":
+Step #0: │   15: resource "google_storage_bucket" "dataflow_template" {
+Step #0: │ 
+Step #0: ╵
+Step #0: ╷
+Step #0: │ Error: Error creating Dataset: googleapi: Error 409: Already Exists: Dataset gcp-agent-garden:getwellsoon_dataset, duplicate
+Step #0: │ 
+Step #0: │   with google_bigquery_dataset.dataset,
+Step #0: │   on main.tf line 20, in resource "google_bigquery_dataset" "dataset":
+Step #0: │   20: resource "google_bigquery_dataset" "dataset" {
+Step #0: │ 
 Step #0: ╵
 Finished Step #0
 ERROR
 ERROR: build step 0 "hashicorp/terraform:1.6.6" failed: step exited with non-zero status: 1
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-BUILD FAILURE: Build step failure: build step 0 "hashicorp/terraform:1.6.6" failed: step exited with non-zero status: 1
-ERROR: (gcloud.builds.submit) build 6e7923fe-eb55-415d-aa0b-67ac8b3869e9 completed with status "FAILURE"
-   
