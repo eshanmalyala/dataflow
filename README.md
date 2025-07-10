@@ -242,3 +242,10 @@ googleapiclient.errors.HttpError: <HttpError 403 when requesting https://dataflo
 [2025-07-10, 09:28:15 UTC] {local_task_job_runner.py:266} INFO - Task exited with return code 1
 [2025-07-10, 09:28:15 UTC] {taskinstance.py:3904} INFO - 0 downstream tasks scheduled from follow-on schedule check
 [2025-07-10, 09:28:15 UTC] {local_task_job_runner.py:245} ▲▲▲ Log group end
+
+## issue 5
+
+Failed to start the VM, launcher-2025071003550017293866963799895596, used for launching because of status code: INVALID_ARGUMENT, reason: Invalid Error:
+ Message: Invalid value for field 'resource.networkInterfaces[0].subnetwork': 'subnetwork=regions/europe-west1/subnetworks/mcd-eu-west1-subnet1'. The URL is malformed.
+ HTTP Code: 400.
+
