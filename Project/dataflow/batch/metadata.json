@@ -1,1 +1,18 @@
-#
+{
+  "name": "dataflow-batch-pii",
+  "description": "Batch Dataflow pipeline for PII masking from GCS to BigQuery",
+  "parameters": [
+    {
+      "name": "input_path",
+      "label": "Input GCS file path",
+      "helpText": "GCS URI of the input file (e.g., gs://bucket/path/file.csv)",
+      "paramType": "TEXT"
+    },
+    {
+      "name": "output_table",
+      "label": "Output BigQuery table",
+      "helpText": "BigQuery table to write to (e.g., project:dataset.table)",
+      "paramType": "TEXT"
+    }
+  ]
+}
