@@ -53,24 +53,25 @@ Then trigger the pipeline:
 gcloud iam service-accounts create getwellsoon-dataflow-service \
   --display-name "Dataflow Service Account"
 
+1051082499499-compute@developer.gserviceaccount.com
+
 gcloud projects add-iam-policy-binding gcp-agent-garden \
-  --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
+  --member="serviceAccount:1051082499499-compute@developer.gserviceaccount.com" \
   --role="roles/dataflow.worker"
   
   gcloud projects add-iam-policy-binding gcp-agent-garden \
-  --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
+  --member="serviceAccount:1051082499499-compute@developer.gserviceaccount.com" \
   --role="roles/storage.objectViewer"
   
   gcloud projects add-iam-policy-binding gcp-agent-garden \
-  --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
+  --member="serviceAccount:1051082499499-compute@developer.gserviceaccount.com" \
   --role="roles/bigquery.dataEditor"
 
 gcloud projects add-iam-policy-binding gcp-agent-garden \
   --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
   --role="roles/storage.objectAdmin"
 
- gcloud projects add-iam-policy-binding gcp-agent-garden
---member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com"  --role="roles/iam.serviceAccounts.actAs"
+ gcloud iam service-accounts  add-iam-policy-binding  1051082499499-compute@developer.gserviceaccount.com --member="serviceAccount:composer-service-account@gcp-agent-garden.iam.gserviceaccount.com"  --role="roles/iam.serviceAccountUser"
 
 
 
