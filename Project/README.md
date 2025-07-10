@@ -106,3 +106,33 @@ gcloud iam service-accounts add-iam-policy-binding getwellsoon-dataflow-service@
   --network=projects/gcp-agent-garden/global/networks/agent-garden-custom-vpc \
   --service-account-email=getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com
 
+
+
+
+# Steps to Create a Separate VPC and Subnet for Dataflow
+
+gcloud compute networks create dataflow-vpc \
+  --subnet-mode=custom \
+  --bgp-routing-mode=regional
+
+gcloud compute networks subnets create dataflow-subnet \
+  --network=dataflow-vpc \
+  --region=europe-west1 \
+  --range=10.10.0.0/16
+
+gcloud compute networks subnets update dataflow-subnet \
+  --region=europe-west1 \
+  --enable-private-ip-google-access
+
+gcloud compute firewall-rules create allow-egress \
+  --network=dataflow-vpc \
+  --allow=tcp,udp,icmp \
+  --direction=EGRESS \
+  --priority=1000 \
+  --destination-ranges=0.0.0.0/0
+
+gcloud compute firewall-rules create allow-internal \
+  --network=dataflow-vpc \
+  --allow=all \
+  --source-ranges=10.10.0.0/16
+
