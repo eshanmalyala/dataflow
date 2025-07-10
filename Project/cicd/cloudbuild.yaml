@@ -1,5 +1,15 @@
 steps:
-  # Step 1: Build Docker image
+  # Step 1: Run Terraform init and apply
+  - name: hashicorp/terraform:1.6.6
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        cd terraform
+        terraform init
+        terraform apply -auto-approve
+
+  # Step 2: Build Docker image for streaming pipeline
   - name: 'gcr.io/cloud-builders/docker'
     dir: 'dataflow/streaming'
     args:
@@ -9,7 +19,7 @@ steps:
         '.'
       ]
 
-  # Step 2: Push Docker image to Artifact Registry
+  # Step 3: Push Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -17,7 +27,7 @@ steps:
         'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii'
       ]
 
-  # Step 3: Build Flex Template
+  # Step 4: Build Flex Template in GCS
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
@@ -29,7 +39,7 @@ steps:
           --metadata-file dataflow/streaming/metadata.json \
           --temp-location gs://getwellsoon-bucket/tmp
 
-  # Step 4: Launch Streaming Dataflow Job
+  # Step 5: Launch Dataflow Streaming Job
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
