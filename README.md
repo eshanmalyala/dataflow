@@ -252,6 +252,24 @@ Failed to start the VM, launcher-2025071003550017293866963799895596, used for la
 
 # issue 6 
 
+e:latest
+Step #1:  976d7ac8a19c
+Step #1: Step 2/6 : WORKDIR /dataflow/template
+Step #1:  Running in dbd9d9b10a23
+Step #1: Removing intermediate container dbd9d9b10a23
+Step #1:  20706d6f0424
+Step #1: Step 3/6 : COPY streaming_pipeline.py .
+Step #1:  12913879f0e7
+Step #1: Step 4/6 : COPY ../common/masking_utils.py common/masking_utils.py
+Step #1: COPY failed: forbidden path outside the build context: ../common/masking_utils.py ()
+Finished Step #1
+ERROR
+ERROR: build step 1 "gcr.io/cloud-builders/docker" failed: step exited with non-zero status: 1
+--------------------------------------------------------------------------------
+
+BUILD FAILURE: Build step failure: build step 1 "gcr.io/cloud-builders/docker" failed: step exited with non-zero status: 1
+ERROR: (gcloud.builds.submit) build ca9be0b9-4f19-4cfe-bcf1-c40b2c6198ab completed with status "FAILURE"
+
 
 2025-07-10 19:33:35.338 IST
 docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: exec: "/opt/google/dataflow/python_template_launcher": stat /opt/google/dataflow/python_template_launcher: no such file or directory: unknown.
