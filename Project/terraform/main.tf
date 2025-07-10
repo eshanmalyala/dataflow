@@ -5,6 +5,9 @@ provider "google" {
 
 resource "google_pubsub_topic" "topic" {
   name = var.topic_id
+  lifecycle {
+       prevent_destroy = false
+     }
 }
 
 resource "google_pubsub_subscription" "sub" {
@@ -15,12 +18,21 @@ resource "google_pubsub_subscription" "sub" {
 resource "google_storage_bucket" "dataflow_template" {
   name     = var.bucket_name
   location = var.region
+  force_destroy = true
+  uniform_bucket_level_access = true
+  lifecycle {
+    prevent_destroy = false
+    ignore_changes  = [labels]
+  }
 }
 
 resource "google_bigquery_dataset" "dataset" {
   dataset_id                  = var.dataset_id
   location                    = var.region
   delete_contents_on_destroy = true
+  lifecycle {
+       prevent_destroy = false
+     }
 }
 
 resource "google_artifact_registry_repository" "repo" {
