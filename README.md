@@ -124,3 +124,112 @@ googleapiclient.errors.HttpError: <HttpError 404 when requesting https://dataflo
 [2025-07-10, 08:46:55 UTC] {local_task_job_runner.py:266} INFO - Task exited with return code 1
 [2025-07-10, 08:46:55 UTC] {taskinstance.py:3904} INFO - 0 downstream tasks scheduled from follow-on schedule check
 [2025-07-10, 08:46:55 UTC] {local_task_job_runner.py:245} ▲▲▲ Log group end
+
+
+# #issue  3
+
+
+default-hostname
+*** Reading remote logs from Cloud Logging.
+[2025-07-10, 09:02:01 UTC] {local_task_job_runner.py:123} ▶ Pre task execution logs
+[2025-07-10, 09:02:03 UTC] {dataflow.py:632} INFO - Job name was changed to streaming-pii-job-20250710-e310b654
+[2025-07-10, 09:02:03 UTC] {base.py:84} INFO - Retrieving connection 'google_cloud_default'
+[2025-07-10, 09:02:03 UTC] {credentials_provider.py:410} INFO - Getting connection using `google.auth.default()` since no explicit credentials are provided.
+[2025-07-10, 09:02:03 UTC] {google_auth_httplib2.py:112} WARNING - httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance.
+[2025-07-10, 09:02:03 UTC] {google_auth_httplib2.py:112} WARNING - httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance.
+[2025-07-10, 09:02:05 UTC] {http.py:140} WARNING - Encountered 403 Forbidden with reason "PERMISSION_DENIED"
+[2025-07-10, 09:02:05 UTC] {taskinstance.py:3315} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 769, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 735, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/cloud/operators/dataflow.py", line 596, in execute
+    self.job = self.hook.start_flex_template(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/common/hooks/base_google.py", line 532, in inner_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/cloud/hooks/dataflow.py", line 820, in start_flex_template
+    response: dict = request.execute(num_retries=self.num_retries)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/googleapiclient/_helpers.py", line 130, in positional_wrapper
+    return wrapped(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/googleapiclient/http.py", line 938, in execute
+    raise HttpError(resp, content, uri=self.uri)
+googleapiclient.errors.HttpError: <HttpError 403 when requesting https://dataflow.googleapis.com/v1b3/projects/gcp-agent-garden/locations/europe-west1/flexTemplates:launch?alt=json returned "(ba5f06a874b0caf6): Current user cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. Enforced by Org Policy constraint constraints/dataflow.enforceComputeDefaultServiceAccountCheck. https://cloud.google.com/iam/docs/service-accounts-actas Causes: (ba5f06a874b0c79e): Current user  cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. If the service account belongs to the current project, please grant your user account one of [Owner, Editor, Service Account User] roles, or any other role that includes the iam.serviceAccounts.actAs permission. See https://cloud.google.com/iam/docs/service-accounts-actas for additional details. If the service account belongs to another project, please disable the iam.disableCrossProjectServiceAccountUsage org-policy constraint on the project the service account belongs to. See https://cloud.google.com/iam/docs/attach-service-accounts#attaching-different-project for additional details.". Details: "(ba5f06a874b0caf6): Current user cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. Enforced by Org Policy constraint constraints/dataflow.enforceComputeDefaultServiceAccountCheck. https://cloud.google.com/iam/docs/service-accounts-actas Causes: (ba5f06a874b0c79e): Current user  cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. If the service account belongs to the current project, please grant your user account one of [Owner, Editor, Service Account User] roles, or any other role that includes the iam.serviceAccounts.actAs permission. See https://cloud.google.com/iam/docs/service-accounts-actas for additional details. If the service account belongs to another project, please disable the iam.disableCrossProjectServiceAccountUsage org-policy constraint on the project the service account belongs to. See https://cloud.google.com/iam/docs/attach-service-accounts#attaching-different-project for additional details.">
+[2025-07-10, 09:02:05 UTC] {taskinstance.py:1227} INFO - Marking task as UP_FOR_RETRY. dag_id=trigger_streaming_dataflow_job, task_id=start_streaming_flex_job, run_id=manual__2025-07-10T09:01:57.702078+00:00, execution_date=20250710T090157, start_date=20250710T090201, end_date=20250710T090205
+[2025-07-10, 09:02:05 UTC] {taskinstance.py:341} ▼ Post task execution logs
+[2025-07-10, 09:02:05 UTC] {standard_task_runner.py:124} ERROR - Failed to execute job 491 for task start_streaming_flex_job (<HttpError 403 when requesting https://dataflow.googleapis.com/v1b3/projects/gcp-agent-garden/locations/europe-west1/flexTemplates:launch?alt=json returned "(ba5f06a874b0caf6): Current user cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. Enforced by Org Policy constraint constraints/dataflow.enforceComputeDefaultServiceAccountCheck. https://cloud.google.com/iam/docs/service-accounts-actas Causes: (ba5f06a874b0c79e): Current user  cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. If the service account belongs to the current project, please grant your user account one of [Owner, Editor, Service Account User] roles, or any other role that includes the iam.serviceAccounts.actAs permission. See https://cloud.google.com/iam/docs/service-accounts-actas for additional details. If the service account belongs to another project, please disable the iam.disableCrossProjectServiceAccountUsage org-policy constraint on the project the service account belongs to. See https://cloud.google.com/iam/docs/attach-service-accounts#attaching-different-project for additional details.". Details: "(ba5f06a874b0caf6): Current user cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. Enforced by Org Policy constraint constraints/dataflow.enforceComputeDefaultServiceAccountCheck. https://cloud.google.com/iam/docs/service-accounts-actas Causes: (ba5f06a874b0c79e): Current user  cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. If the service account belongs to the current project, please grant your user account one of [Owner, Editor, Service Account User] roles, or any other role that includes the iam.serviceAccounts.actAs permission. See https://cloud.google.com/iam/docs/service-accounts-actas for additional details. If the service account belongs to another project, please disable the iam.disableCrossProjectServiceAccountUsage org-policy constraint on the project the service account belongs to. See https://cloud.google.com/iam/docs/attach-service-accounts#attaching-different-project for additional details.">; 85415)
+Traceback (most recent call last):
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 489, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3008, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 274, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3163, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3187, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 769, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 735, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/cloud/operators/dataflow.py", line 596, in execute
+    self.job = self.hook.start_flex_template(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/common/hooks/base_google.py", line 532, in inner_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/cloud/hooks/dataflow.py", line 820, in start_flex_template
+    response: dict = request.execute(num_retries=self.num_retries)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/googleapiclient/_helpers.py", line 130, in positional_wrapper
+    return wrapped(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/googleapiclient/http.py", line 938, in execute
+    raise HttpError(resp, content, uri=self.uri)
+googleapiclient.errors.HttpError: <HttpError 403 when requesting https://dataflow.googleapis.com/v1b3/projects/gcp-agent-garden/locations/europe-west1/flexTemplates:launch?alt=json returned "(ba5f06a874b0caf6): Current user cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. Enforced by Org Policy constraint constraints/dataflow.enforceComputeDefaultServiceAccountCheck. https://cloud.google.com/iam/docs/service-accounts-actas Causes: (ba5f06a874b0c79e): Current user  cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. If the service account belongs to the current project, please grant your user account one of [Owner, Editor, Service Account User] roles, or any other role that includes the iam.serviceAccounts.actAs permission. See https://cloud.google.com/iam/docs/service-accounts-actas for additional details. If the service account belongs to another project, please disable the iam.disableCrossProjectServiceAccountUsage org-policy constraint on the project the service account belongs to. See https://cloud.google.com/iam/docs/attach-service-accounts#attaching-different-project for additional details.". Details: "(ba5f06a874b0caf6): Current user cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. Enforced by Org Policy constraint constraints/dataflow.enforceComputeDefaultServiceAccountCheck. https://cloud.google.com/iam/docs/service-accounts-actas Causes: (ba5f06a874b0c79e): Current user  cannot act as service account 1051082499499-compute@developer.gserviceaccount.com. If the service account belongs to the current project, please grant your user account one of [Owner, Editor, Service Account User] roles, or any other role that includes the iam.serviceAccounts.actAs permission. See https://cloud.google.com/iam/docs/service-accounts-actas for additional details. If the service account belongs to another project, please disable the iam.disableCrossProjectServiceAccountUsage org-policy constraint on the project the service account belongs to. See https://cloud.google.com/iam/docs/attach-service-accounts#attaching-different-project for additional details.">
+[2025-07-10, 09:02:05 UTC] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2025-07-10, 09:02:05 UTC] {taskinstance.py:3904} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-07-10, 09:02:05 UTC] {local_task_job_runner.py:245} ▲▲▲ Log group end
