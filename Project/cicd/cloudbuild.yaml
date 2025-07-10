@@ -13,7 +13,7 @@ steps:
 
   # Step 2: Build Docker image for Dataflow Streaming Flex Template
   - name: 'gcr.io/cloud-builders/docker'
-    dir: 'dataflow/streaming'
+    dir: 'dataflow'
     args:
       [
         'build',
