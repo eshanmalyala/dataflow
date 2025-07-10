@@ -293,6 +293,30 @@ ERROR: (gcloud.builds.submit) build d2900343-e089-4da1-a8d1-61994517cd3e complet
 # issue 8
 
 {
+insertId: "1040483747809619142:524425:0:275983"
+jsonPayload: {
+message: "cloudservice.service: Main process exited, code=exited, status=1/FAILURE"
+}
+labels: {6}
+logName: "projects/gcp-agent-garden/logs/dataflow.googleapis.com%2Flauncher"
+receiveTimestamp: "2025-07-10T14:48:10.815590339Z"
+resource: {2}
+severity: "ERROR"
+timestamp: "2025-07-10T14:48:08.873649Z" 
+
+{
+insertId: "1040483747809619142:524425:0:277152"
+jsonPayload: {
+message: "cloudservice.service: Failed with result 'exit-code'."
+}
+labels: {6}
+logName: "projects/gcp-agent-garden/logs/dataflow.googleapis.com%2Flauncher"
+receiveTimestamp: "2025-07-10T14:48:20.819412500Z"
+resource: {2}
+severity: "ERROR"
+timestamp: "2025-07-10T14:48:08.940485Z"
+}
+{
 insertId: "1idzz8xc2xy"
 labels: {4}
 logName: "projects/gcp-agent-garden/logs/dataflow.googleapis.com%2Fjob-message"
@@ -301,3 +325,4 @@ resource: {2}
 severity: "ERROR"
 textPayload: "Error occurred in the launcher container: could not determine py file from env"
 timestamp: "2025-07-10T14:49:52.160761384Z"
+
