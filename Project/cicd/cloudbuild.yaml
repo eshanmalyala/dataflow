@@ -39,16 +39,25 @@ steps:
           --metadata-file dataflow/streaming/metadata.json \
           --temp-location gs://getwellsoon-bucket/tmp
 
-  # Step 5: Launch Dataflow Streaming Job
+  # Step 5: Launch Dataflow Streaming Job  Upload Composer DAGs
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        gcloud dataflow flex-template run "streaming-pii-job-$(date +%Y%m%d-%H%M%S)" \
-          --template-file-gcs-location gs://getwellsoon-bucket/templates/streaming_template.json \
-          --region europe-west1 \
-          --parameters input_subscription=projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub,\
-output_table=gcp-agent-garden:getwellsoon_dataset.customer_data
+        gsutil -m cp composer/dags/*.py gs://<COMPOSER_DAG_BUCKET>/dags/
+
+#   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#     entrypoint: 'bash'
+#     args:
+#       - '-c'
+#       - |
+#         gcloud dataflow flex-template run "streaming-pii-job-$(date +%Y%m%d-%H%M%S)" \
+#           --template-file-gcs-location gs://getwellsoon-bucket/templates/streaming_template.json \
+#           --region europe-west1 \
+#           --parameters input_subscription=projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub,\
+# output_table=gcp-agent-garden:getwellsoon_dataset.customer_data
 
 timeout: 1800s
+
+logsBucket: 'gs://getwellsoon-bucket'
