@@ -13,7 +13,3 @@ output "bq_dataset" {
 output "dataflow_template_bucket" {
   value = google_storage_bucket.dataflow_template.name
 }
-
-output "composer_dag_bucket" {
-  value = google_composer_environment.env.config[0].dag_gcs_prefix
-}
