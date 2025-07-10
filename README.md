@@ -274,3 +274,17 @@ ERROR: (gcloud.builds.submit) build ca9be0b9-4f19-4cfe-bcf1-c40b2c6198ab complet
 2025-07-10 19:33:35.338 IST
 docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: exec: "/opt/google/dataflow/python_template_launcher": stat /opt/google/dataflow/python_template_launcher: no such file or directory: unknown.
 
+# issue 7 
+
+
+Finished Step #0 - "terraform-apply"
+Starting Step #1
+Step #1: Already have image (with digest): gcr.io/cloud-builders/docker
+Step #1: unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /workspace/dataflow/Dockerfile: no such file or directory
+Finished Step #1
+ERROR
+ERROR: build step 1 "gcr.io/cloud-builders/docker" failed: step exited with non-zero status: 1
+--------------------------------------------------------------------------------
+
+BUILD FAILURE: Build step failure: build step 1 "gcr.io/cloud-builders/docker" failed: step exited with non-zero status: 1
+ERROR: (gcloud.builds.submit) build d2900343-e089-4da1-a8d1-61994517cd3e completed with status "FAILURE"
