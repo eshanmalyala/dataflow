@@ -11,13 +11,14 @@ steps:
 
   # Step 2: Build Docker image for streaming pipeline
   - name: 'gcr.io/cloud-builders/docker'
-    dir: 'dataflow/streaming'
+    dir: 'dataflow'
     args:
       [
-        'build', '-t',
-        'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii',
-        '.'
-      ]
+      'build',
+      '-f', 'streaming/Dockerfile',
+      '-t', 'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii',
+      '.'
+    ]
 
   # Step 3: Push Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
