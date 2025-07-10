@@ -1,1 +1,16 @@
-#
+{
+  "name": "streaming-pii-flex-template",
+  "description": "Streaming Dataflow Flex Template for PII masking",
+  "parameters": [
+    {
+      "name": "input_subscription",
+      "label": "Input Pub/Sub Subscription",
+      "helpText": "Pub/Sub subscription to read from"
+    },
+    {
+      "name": "output_table",
+      "label": "Output BigQuery Table",
+      "helpText": "BigQuery table to write masked data to"
+    }
+  ]
+}
