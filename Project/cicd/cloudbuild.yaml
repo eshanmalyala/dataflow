@@ -1,6 +1,7 @@
 steps:
   # Step 1: Run Terraform init and apply
   - name: hashicorp/terraform:1.6.6
+    id: terraform-apply
     entrypoint: sh
     args:
       - -c
@@ -8,6 +9,7 @@ steps:
         cd terraform
         terraform init
         terraform apply -auto-approve
+        terraform output -raw dataflow_template_bucket > /workspace/BKT_NAME.txt
 
   # Step 2: Build Docker image for streaming pipeline
   - name: 'gcr.io/cloud-builders/docker'
@@ -34,8 +36,6 @@ steps:
     args:
       - '-c'
       - |
-        cd terraform
-        terraform output -raw dataflow_template_bucket > /workspace/BKT_NAME.txt
         BUCKET=$(cat /workspace/BKT_NAME.txt)
         echo "Using bucket: $$BUCKET"
         gcloud dataflow flex-template build gs://$$BUCKET/templates/streaming_template.json \
