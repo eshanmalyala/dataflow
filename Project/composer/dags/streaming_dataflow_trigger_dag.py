@@ -12,7 +12,7 @@ SERVICE_ACCOUNT = "getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceacc
 with models.DAG(
     dag_id="trigger_streaming_dataflow_job",
     schedule_interval=None,  
-    start_date=datetime(2023, 1, 1),
+    start_date=datetime(2025, 7, 10),
     catchup=False,
     tags=["streaming", "dataflow", "pii"],
 ) as dag:
