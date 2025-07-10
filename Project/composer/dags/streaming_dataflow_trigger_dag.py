@@ -7,8 +7,6 @@ REGION = "europe-west1"
 TEMPLATE_GCS_PATH = "gs://getwellsoon-bucket-demo/templates/streaming_template.json"
 SUBSCRIPTION = f"projects/{PROJECT_ID}/subscriptions/getwellsoon-topic-sub"
 BQ_TABLE = f"{PROJECT_ID}:getwellsoon_dataset.customer_data"
-SERVICE_ACCOUNT = "getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com"  
-
 with models.DAG(
     dag_id="trigger_streaming_dataflow_job",
     schedule_interval=None,  
@@ -28,10 +26,7 @@ with models.DAG(
                 "parameters": {
                     "input_subscription": SUBSCRIPTION,
                     "output_table": BQ_TABLE
-                },
-                "environment": {
-                    "serviceAccountEmail": SERVICE_ACCOUNT  
                 }
             }
-        },
+        }
     )
