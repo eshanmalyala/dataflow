@@ -11,37 +11,116 @@ ERROR: (gcloud.builds.submit) INVALID_ARGUMENT: generic::invalid_argument: inval
 ### issue 2
 
 
-Step #3: Pulling image: gcr.io/google.com/cloudsdktool/cloud-sdk
-Step #3: Using default tag: latest
-Step #3: latest: Pulling from google.com/cloudsdktool/cloud-sdk
-Step #3: Digest: sha256:99c8977b5214a2c7da1cd0a77910f37bfbc7d8c3737446b886a5c058706c4c7c
-Step #3: Status: Downloaded newer image for gcr.io/google.com/cloudsdktool/cloud-sdk:latest
-Step #3: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
-Step #3: bash: line 2: terraform: command not found
-Step #3: Using bucket:
-Step #3: ERROR: (gcloud.dataflow.flex-template.build) argument --metadata-file: Unable to read file [dataflow/streaming/metadata.json]: [Errno 2] No such file or directory: 'dataflow/streaming/metadata.json'
-Step #3: Usage: gcloud dataflow flex-template build TEMPLATE_FILE_GCS_PATH --sdk-language=SDK_LANGUAGE (--image=IMAGE | --env=[ENV,...] --flex-template-base-image=FLEX_TEMPLATE_BASE_IMAGE --image-gcr-path=IMAGE_GCR_PATH (--go-binary-path=GO_BINARY_PATH | --jar=[JAR,...] | --py-path=[PY_PATH,...]) | [--yaml-pipeline-path=YAML_PIPELINE_PATH : --yaml-image=YAML_IMAGE]) [optional flags]
-Step #3:   optional flags may be  --additional-experiments | --additional-user-labels |
-Step #3:                          --cloud-build-service-account | --dataflow-kms-key |
-Step #3:                          --disable-public-ips | --enable-streaming-engine |
-Step #3:                          --env | --flex-template-base-image | --gcs-log-dir |
-Step #3:                          --go-binary-path | --help | --image |
-Step #3:                          --image-gcr-path | --image-repository-cert-path |
-Step #3:                          --image-repository-password-secret-id |
-Step #3:                          --image-repository-username-secret-id | --jar |
-Step #3:                          --max-workers | --metadata-file | --network |
-Step #3:                          --num-workers | --print-only | --py-path |
-Step #3:                          --service-account-email | --staging-location |
-Step #3:                          --subnetwork | --temp-location |
-Step #3:                          --worker-machine-type | --worker-region |
-Step #3:                          --worker-zone | --yaml-image | --yaml-pipeline-path
-Step #3: 
-Step #3: For detailed information on this command and its flags, run:
-Step #3:   gcloud dataflow flex-template build --help
-Finished Step #3
-ERROR
-ERROR: build step 3 "gcr.io/google.com/cloudsdktool/cloud-sdk" failed: step exited with non-zero status: 2
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-BUILD FAILURE: Build step failure: build step 3 "gcr.io/google.com/cloudsdktool/cloud-sdk" failed: step exited with non-zero status: 2
-ERROR: (gcloud.builds.submit) build 884650fb-134c-4f22-b184-a9de01d7eed5 completed with status "FAILURE"
+default-hostname
+*** Reading remote logs from Cloud Logging.
+[2025-07-10, 08:46:52 UTC] {local_task_job_runner.py:123} ▼ Pre task execution logs
+[2025-07-10, 08:46:52 UTC] {taskinstance.py:2616} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: trigger_streaming_dataflow_job.start_streaming_flex_job manual__2025-07-10T08:46:49.428570+00:00 [queued]>
+[2025-07-10, 08:46:52 UTC] {taskinstance.py:2616} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: trigger_streaming_dataflow_job.start_streaming_flex_job manual__2025-07-10T08:46:49.428570+00:00 [queued]>
+[2025-07-10, 08:46:52 UTC] {taskinstance.py:2869} INFO - Starting attempt 1 of 3
+[2025-07-10, 08:46:52 UTC] {taskinstance.py:2892} INFO - Executing <Task(DataflowStartFlexTemplateOperator): start_streaming_flex_job> on 2025-07-10 08:46:49.428570+00:00
+[2025-07-10, 08:46:52 UTC] {standard_task_runner.py:72} INFO - Started process 85105 to run task
+[2025-07-10, 08:46:52 UTC] {standard_task_runner.py:104} INFO - Running: ['airflow', 'tasks', 'run', 'trigger_streaming_dataflow_job', 'start_streaming_flex_job', 'manual__2025-07-10T08:46:49.428570+00:00', '--job-id', '486', '--raw', '--subdir', 'DAGS_FOLDER/streaming_dataflow_trigger_dag.py', '--cfg-path', '/tmp/tmpvyh1nxmc']
+[2025-07-10, 08:46:52 UTC] {standard_task_runner.py:105} INFO - Job 486: Subtask start_streaming_flex_job
+[2025-07-10, 08:46:52 UTC] {task_command.py:473} INFO - Running <TaskInstance: trigger_streaming_dataflow_job.start_streaming_flex_job manual__2025-07-10T08:46:49.428570+00:00 [running]> on host airflow-worker-m8678
+[2025-07-10, 08:46:53 UTC] {taskinstance.py:3136} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='trigger_streaming_dataflow_job' AIRFLOW_CTX_TASK_ID='start_streaming_flex_job' AIRFLOW_CTX_EXECUTION_DATE='2025-07-10T08:46:49.428570+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-07-10T08:46:49.428570+00:00'
+[2025-07-10, 08:46:53 UTC] {taskinstance.py:733} ▲▲▲ Log group end
+[2025-07-10, 08:46:53 UTC] {dataflow.py:632} INFO - Job name was changed to streaming-pii-job-20250710-14c76bd5
+[2025-07-10, 08:46:54 UTC] {base.py:84} INFO - Retrieving connection 'google_cloud_default'
+[2025-07-10, 08:46:54 UTC] {credentials_provider.py:410} INFO - Getting connection using `google.auth.default()` since no explicit credentials are provided.
+[2025-07-10, 08:46:54 UTC] {google_auth_httplib2.py:112} WARNING - httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance.
+[2025-07-10, 08:46:54 UTC] {google_auth_httplib2.py:112} WARNING - httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance.
+[2025-07-10, 08:46:54 UTC] {taskinstance.py:3315} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 769, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 735, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/cloud/operators/dataflow.py", line 596, in execute
+    self.job = self.hook.start_flex_template(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/common/hooks/base_google.py", line 532, in inner_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/cloud/hooks/dataflow.py", line 820, in start_flex_template
+    response: dict = request.execute(num_retries=self.num_retries)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/googleapiclient/_helpers.py", line 130, in positional_wrapper
+    return wrapped(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/googleapiclient/http.py", line 938, in execute
+    raise HttpError(resp, content, uri=self.uri)
+googleapiclient.errors.HttpError: <HttpError 404 when requesting https://dataflow.googleapis.com/v1b3/projects/gcp-agent-garden/locations/europe-west1/flexTemplates:launch?alt=json returned "(710ce26244e56f58): Unable to open template file: gs://getwellsoon-bucket/templates/streaming_template.json.". Details: "(710ce26244e56f58): Unable to open template file: gs://getwellsoon-bucket/templates/streaming_template.json.">
+[2025-07-10, 08:46:54 UTC] {taskinstance.py:1227} INFO - Marking task as UP_FOR_RETRY. dag_id=trigger_streaming_dataflow_job, task_id=start_streaming_flex_job, run_id=manual__2025-07-10T08:46:49.428570+00:00, execution_date=20250710T084649, start_date=20250710T084652, end_date=20250710T084654
+[2025-07-10, 08:46:55 UTC] {taskinstance.py:341} ▼ Post task execution logs
+[2025-07-10, 08:46:55 UTC] {standard_task_runner.py:124} ERROR - Failed to execute job 486 for task start_streaming_flex_job (<HttpError 404 when requesting https://dataflow.googleapis.com/v1b3/projects/gcp-agent-garden/locations/europe-west1/flexTemplates:launch?alt=json returned "(710ce26244e56f58): Unable to open template file: gs://getwellsoon-bucket/templates/streaming_template.json.". Details: "(710ce26244e56f58): Unable to open template file: gs://getwellsoon-bucket/templates/streaming_template.json.">; 85105)
+Traceback (most recent call last):
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 489, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3008, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 274, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3163, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3187, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 769, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 735, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/cloud/operators/dataflow.py", line 596, in execute
+    self.job = self.hook.start_flex_template(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/common/hooks/base_google.py", line 532, in inner_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/airflow/providers/google/cloud/hooks/dataflow.py", line 820, in start_flex_template
+    response: dict = request.execute(num_retries=self.num_retries)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/googleapiclient/_helpers.py", line 130, in positional_wrapper
+    return wrapped(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python3.11/lib/python3.11/site-packages/googleapiclient/http.py", line 938, in execute
+    raise HttpError(resp, content, uri=self.uri)
+googleapiclient.errors.HttpError: <HttpError 404 when requesting https://dataflow.googleapis.com/v1b3/projects/gcp-agent-garden/locations/europe-west1/flexTemplates:launch?alt=json returned "(710ce26244e56f58): Unable to open template file: gs://getwellsoon-bucket/templates/streaming_template.json.". Details: "(710ce26244e56f58): Unable to open template file: gs://getwellsoon-bucket/templates/streaming_template.json.">
+[2025-07-10, 08:46:55 UTC] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2025-07-10, 08:46:55 UTC] {taskinstance.py:3904} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-07-10, 08:46:55 UTC] {local_task_job_runner.py:245} ▲▲▲ Log group end
