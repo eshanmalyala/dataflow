@@ -7,7 +7,7 @@ def say_hello():
 
 with DAG(
     dag_id="hello_world_dag",
-    start_date=datetime(2023, 1, 1),
+    start_date=datetime(2025, 7, 10),
     schedule_interval=None,  
     catchup=False,
     tags=["example"],
