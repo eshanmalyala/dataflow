@@ -326,3 +326,34 @@ severity: "ERROR"
 textPayload: "Error occurred in the launcher container: could not determine py file from env"
 timestamp: "2025-07-10T14:49:52.160761384Z"
 
+
+# issue 9 
+
+Starting Step #3
+Step #3: Pulling image: gcr.io/google.com/cloudsdktool/cloud-sdk
+Step #3: Using default tag: latest
+Step #3: latest: Pulling from google.com/cloudsdktool/cloud-sdk
+Step #3: Digest: sha256:99c8977b5214a2c7da1cd0a77910f37bfbc7d8c3737446b886a5c058706c4c7c
+Step #3: Status: Downloaded newer image for gcr.io/google.com/cloudsdktool/cloud-sdk:latest
+Step #3: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
+Step #3: Using bucket: getwellsoon-bucket-demo
+Step #3: ERROR: gcloud crashed (ValueError): Invalid template metadata. Parameter helpText field is empty. Parameter: <ParameterMetadata
+Step #3:  enumOptions: []
+Step #3:  label: 'Input Pub/Sub subscription'
+Step #3:  name: 'input_subscription'
+Step #3:  parentTriggerValues: []
+Step #3:  regexes: []>
+Step #3: 
+Step #3: If you would like to report this issue, please run the following command:
+Step #3:   gcloud feedback
+Step #3: 
+Step #3: To check gcloud for common problems, please run the following command:
+Step #3:   gcloud info --run-diagnostics
+Finished Step #3
+ERROR
+ERROR: build step 3 "gcr.io/google.com/cloudsdktool/cloud-sdk" failed: step exited with non-zero status: 1
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+BUILD FAILURE: Build step failure: build step 3 "gcr.io/google.com/cloudsdktool/cloud-sdk" failed: step exited with non-zero status: 1
+ERROR: (gcloud.builds.submit) build 8a4bcb02-6eec-4a7c-939c-1e6dd55545f9 completed with status "FAILURE"
+
