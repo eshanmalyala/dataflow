@@ -56,6 +56,14 @@ gcloud iam service-accounts create getwellsoon-dataflow-service \
 gcloud projects add-iam-policy-binding gcp-agent-garden \
   --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
   --role="roles/dataflow.worker"
+  
+  gcloud projects add-iam-policy-binding gcp-agent-garden \
+  --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+  
+  gcloud projects add-iam-policy-binding gcp-agent-garden \
+  --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
+  --role="roles/bigquery.dataEditor"
 
 gcloud projects add-iam-policy-binding gcp-agent-garden \
   --member="serviceAccount:getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com" \
@@ -64,14 +72,30 @@ gcloud projects add-iam-policy-binding gcp-agent-garden \
 gcloud iam service-accounts add-iam-policy-binding getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com \
   --member="user:rajasekhar.malyala@capgemini.com" \
   --role="roles/iam.serviceAccountUser"
+ gcloud iam service-accounts add-iam-policy-binding getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com \
+  --member="user:rajasekhar.malyala@capgemini.com" \
+  --role="roles/iam.serviceAccounts.actAs"
 
 
-# Direct gcloud command 
-gcloud dataflow flex-template run "streaming-pii-job-$(date +%Y%m%d-%H%M%S)" \
+
+    # Direct gcloud command 
+    gcloud dataflow flex-template run "streaming-pii-job-$(date +%Y%m%d-%H%M%S)" \
+      --project=gcp-agent-garden \
+      --region=europe-west1 \
+      --template-file-gcs-location=gs://getwellsoon-bucket-demo/templates/streaming_template.json \
+      --parameters=input_subscription=projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub \
+      --parameters=output_table=gcp-agent-garden:getwellsoon_dataset.customer_data \
+      --service-account-email=getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com
+      --network=projects/gcp-agent-garden/global/networks/agent-garden-custom-vpc
+
+
+ gcloud dataflow flex-template run "streaming-pii-job-$(date +%Y%m%d-%H%M%S)" \
   --project=gcp-agent-garden \
   --region=europe-west1 \
   --template-file-gcs-location=gs://getwellsoon-bucket-demo/templates/streaming_template.json \
   --parameters=input_subscription=projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub \
   --parameters=output_table=gcp-agent-garden:getwellsoon_dataset.customer_data \
-  --service-account-email=dataflow-service@gcp-agent-garden.iam.gserviceaccount.com
+  --parameters=subnetwork=regions/europe-west1/subnetworks/mcd-eu-west1-subnet1 \
+  --network=projects/gcp-agent-garden/global/networks/agent-garden-custom-vpc \
+  --service-account-email=getwellsoon-dataflow-service@gcp-agent-garden.iam.gserviceaccount.com
 
