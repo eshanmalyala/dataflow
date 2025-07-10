@@ -45,7 +45,7 @@ steps:
     args:
       - '-c'
       - |
-        gsutil -m cp composer/dags/*.py gs://<COMPOSER_DAG_BUCKET>/dags/
+        gsutil -m cp composer/dags/*.py gs://europe-west1-composer-env-f-a3c19900-bucket/dags/
 
 #   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
 #     entrypoint: 'bash'
