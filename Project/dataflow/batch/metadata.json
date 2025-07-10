@@ -5,13 +5,13 @@
     {
       "name": "input_path",
       "label": "Input GCS file path",
-      "helpText": "GCS URI of the input file (e.g., gs://bucket/path/file.csv)",
+      "helpText": "GCS URI of the input file gcs bucket)",
       "paramType": "TEXT"
     },
     {
       "name": "output_table",
       "label": "Output BigQuery table",
-      "helpText": "BigQuery table to write to (e.g., project:dataset.table)",
+      "helpText": "BigQuery table to write to dataset.table",
       "paramType": "TEXT"
     }
   ]
