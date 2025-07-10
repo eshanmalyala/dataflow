@@ -65,3 +65,13 @@ gcloud iam service-accounts add-iam-policy-binding getwellsoon-dataflow-service@
   --member="user:rajasekhar.malyala@capgemini.com" \
   --role="roles/iam.serviceAccountUser"
 
+
+# Direct gcloud command 
+gcloud dataflow flex-template run "streaming-pii-job-$(date +%Y%m%d-%H%M%S)" \
+  --project=gcp-agent-garden \
+  --region=europe-west1 \
+  --template-file-gcs-location=gs://getwellsoon-bucket-demo/templates/streaming_template.json \
+  --parameters=input_subscription=projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub \
+  --parameters=output_table=gcp-agent-garden:getwellsoon_dataset.customer_data \
+  --service-account-email=dataflow-service@gcp-agent-garden.iam.gserviceaccount.com
+
