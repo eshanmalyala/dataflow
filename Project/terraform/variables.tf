@@ -3,7 +3,7 @@ variable "project_id" {
 }
 
 variable "region" {
-  default = "EU"
+  default = "europe-west1"
 }
 
 variable "bucket_name" {
