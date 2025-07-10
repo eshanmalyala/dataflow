@@ -12,7 +12,7 @@ resource "google_pubsub_subscription" "sub" {
   topic = google_pubsub_topic.topic.id
 }
 
-resource "google_storage_bucket" "bucket" {
+resource "google_storage_bucket" "dataflow_template" {
   name     = var.bucket_name
   location = var.region
 }
