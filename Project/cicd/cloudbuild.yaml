@@ -54,17 +54,17 @@ steps:
         echo "Using bucket: $$BUCKET"
         gcloud dataflow flex-template run "streaming-beam-`date +%Y%m%d-%H%M%S`" \
         --template-file-gcs-location  gs://$$BUCKET/templates/streaming_pipeline.json \
-        --parameters input_subscription="projects/$PROJECT/subscriptions/$SUBSCRIPTION" \
-        --parameters output_table="$PROJECT:$DATASET.$TABLE" \
-        --region "$REGION"
+        --parameters input_subscription="projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub" \
+        --parameters output_table="gcp-agent-garden.getwellsoon_dataset.customer_data" \ 
+        --region "europe-west1"
 
   # Step 5: Upload Composer DAG
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        gsutil cp composer/dags/streaming_dataflow_trigger_dag.py  gs://europe-west1-composer-env-f-a3c19900-bucket/dags/
+  # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - |
+  #       gsutil cp composer/dags/streaming_dataflow_trigger_dag.py  gs://europe-west1-composer-env-f-a3c19900-bucket/dags/
 
 timeout: 1800s
 
