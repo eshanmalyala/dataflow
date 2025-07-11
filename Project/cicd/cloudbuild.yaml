@@ -52,11 +52,12 @@ steps:
       - |
         BUCKET=$(cat /workspace/BKT_NAME.txt)
         echo "Using bucket: $$BUCKET"
-        gcloud dataflow flex-template run "streaming-beam-$(date +%Y%m%d-%H%M%S)" \
-          --template-file-gcs-location="gs://$$BUCKET/templates/streaming_pipeline.json" \
-          --parameters=input_subscription="projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub" \
-          --parameters=output_table="gcp-agent-garden.getwellsoon_dataset.customer_data" \
-          --region="europe-west1" --subnetwork="https://www.googleapis.com/compute/v1/projects/my-project/regions/europe-west1/subnetworks/dataflow-subnet"
+        gcloud dataflow flex-template run "streaming-beam-$(date +%Y%m%d-%H%M%S)"  \ 
+        --template-file-gcs-location="gs://getwellsoon-bucket-demo/templates/streaming_pipeline.json"  \
+        --region="europe-west1"   --parameters=input_subscription="projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub"  \ 
+        --parameters=output_table="gcp-agent-garden.getwellsoon_dataset.customer_data" \
+        --network="https://www.googleapis.com/compute/v1/projects/gcp-agent-garden/global/networks/dataflow-vpc" \
+        --subnetwork="https://www.googleapis.com/compute/v1/projects/gcp-agent-garden/regions/europe-west1/subnetworks/dataflow-subnet"
   # Step 5: Upload Composer DAG
   # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   #   entrypoint: bash
