@@ -53,19 +53,19 @@ steps:
         gsutil cp composer/dags/*.py gs://europe-west1-composer-env-f-a3c19900-bucket/dags/
 
   #  Step 6: Trigger DAG via Airflow REST API
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        composer_env="europe-west1-composer-env-f"
-        dag_id="trigger_streaming_dataflow_job"
-        project="gcp-agent-garden"
-        location="europe-west1"
+  # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - |
+  #       composer_env="europe-west1-composer-env-f"
+  #       dag_id="trigger_streaming_dataflow_job"
+  #       project="gcp-agent-garden"
+  #       location="europe-west1"
 
-        gcloud composer environments run $composer_env \
-          --location $location \
-          dags trigger -- $dag_id
+  #       gcloud composer environments run $composer_env \
+  #         --location $location \
+  #         dags trigger -- $dag_id
 
 timeout: 1800s
 
