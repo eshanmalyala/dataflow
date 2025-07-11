@@ -6,7 +6,7 @@ ENV FLEX_TEMPLATE_PYTHON_REQUIREMENTS_FILE="/template/requirements.txt"
 ENV FLEX_TEMPLATE_PYTHON_PY_FILE="/template/streaming_pipeline.py"
 
 # Create working directory
-WORKDIR /template
+COPY . /template
 
 # Copy pipeline code and requirements
 COPY dataflow/streaming/streaming_pipeline.py /template/
