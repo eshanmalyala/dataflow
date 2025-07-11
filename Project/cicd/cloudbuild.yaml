@@ -38,7 +38,7 @@ steps:
       - |
         BUCKET=$(cat /workspace/BKT_NAME.txt)
         echo "Using bucket: $$BUCKET"
-        gcloud dataflow flex-template build gs://$$BUCKET/templates/streaming_template.json \
+        gcloud dataflow flex-template build gs://$$BUCKET/templates/streaming_pipeline.json \
         --image europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii \
         --sdk-language PYTHON \
         --metadata-file dataflow/streaming/metadata.json \
