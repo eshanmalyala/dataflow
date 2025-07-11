@@ -44,6 +44,20 @@ steps:
         --metadata-file dataflow/streaming/metadata.json \
         --temp-location gs://$$BUCKET/tmp
 
+  # Step : Run Dataflow Flex Template
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        BUCKET=$(cat /workspace/BKT_NAME.txt)
+        echo "Using bucket: $$BUCKET"
+        gcloud dataflow flex-template run "streaming-beam-`date +%Y%m%d-%H%M%S`" \
+        --template-file-gcs-location  gs://$$BUCKET/templates/streaming_pipeline.json \
+        --parameters input_subscription="projects/$PROJECT/subscriptions/$SUBSCRIPTION" \
+        --parameters output_table="$PROJECT:$DATASET.$TABLE" \
+        --region "$REGION"
+
   # Step 5: Upload Composer DAG
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
