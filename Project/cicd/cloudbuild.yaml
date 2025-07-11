@@ -56,7 +56,7 @@ steps:
           --template-file-gcs-location="gs://$$BUCKET/templates/streaming_pipeline.json" \
           --parameters=input_subscription="projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub" \
           --parameters=output_table="gcp-agent-garden.getwellsoon_dataset.customer_data" \
-          --region="europe-west1"
+          --region="europe-west1" --subnetwork="https://www.googleapis.com/compute/v1/projects/my-project/regions/europe-west1/subnetworks/dataflow-subnet"
   # Step 5: Upload Composer DAG
   # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   #   entrypoint: bash
