@@ -1,72 +1,101 @@
+from __future__ import annotations
+import argparse
 import json
+import logging
+import time
+from typing import Any
+
 import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions
-from apache_beam.io.gcp.bigquery import WriteToBigQuery
-from apache_beam.io.gcp.pubsub import ReadFromPubSub
+import apache_beam.transforms.window as window
 
-from common.masking_utils import mask_email, mask_phone
+# Defines the BigQuery schema for the output table.
+SCHEMA = ",".join(
+    [
+        "url:STRING",
+        "num_reviews:INTEGER",
+        "score:FLOAT64",
+        "first_date:TIMESTAMP",
+        "last_date:TIMESTAMP",
+    ]
+)
 
-class ParseAndMaskDoFn(beam.DoFn):
-    def process(self, message):
-        row = json.loads(message.decode("utf-8"))
-        row['email'] = mask_email(row.get('email', ''))
-        row['phone'] = mask_phone(row.get('phone', ''))
-        yield row
 
-def run():
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--input_subscription', required=True)
-    parser.add_argument('--output_table', required=True)
-    args, beam_args = parser.parse_known_args()
+def parse_json_message(message: str) -> dict[str, Any]:
+    """Parse the input json message and add 'score' & 'processing_time' keys."""
+    row = json.loads(message)
+    return {
+        "url": row["url"],
+        "score": 1.0 if row["review"] == "positive" else 0.0,
+        "processing_time": int(time.time()),
+    }
 
-    pipeline_options = PipelineOptions(beam_args, streaming=True, save_main_session=True)
 
-    with beam.Pipeline(options=pipeline_options) as p:
-        (
-            p
-            | 'ReadFromPubSub' >> ReadFromPubSub(subscription=args.input_subscription)
-            | 'ParseAndMask' >> beam.ParDo(ParseAndMaskDoFn())
-            | 'WriteToBigQuery' >> WriteToBigQuery(
-                args.output_table,
-                write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND,
-                create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED
+def run(
+    input_subscription: str,
+    output_table: str,
+    window_interval_sec: int = 60,
+    beam_args: list[str] = None,
+) -> None:
+    """Build and run the pipeline."""
+    options = PipelineOptions(beam_args, save_main_session=True, streaming=True)
+
+    with beam.Pipeline(options=options) as pipeline:
+        messages = (
+            pipeline
+            | "Read from Pub/Sub"
+            >> beam.io.ReadFromPubSub(
+                subscription=input_subscription
+            ).with_output_types(bytes)
+            | "UTF-8 bytes to string" >> beam.Map(lambda msg: msg.decode("utf-8"))
+            | "Parse JSON messages" >> beam.Map(parse_json_message)
+            | "Fixed-size windows"
+            >> beam.WindowInto(window.FixedWindows(window_interval_sec, 0))
+            | "Add URL keys" >> beam.WithKeys(lambda msg: msg["url"])
+            | "Group by URLs" >> beam.GroupByKey()
+            | "Get statistics"
+            >> beam.MapTuple(
+                lambda url, messages: {
+                    "url": url,
+                    "num_reviews": len(messages),
+                    "score": sum(msg["score"] for msg in messages) / len(messages),
+                    "first_date": min(msg["processing_time"] for msg in messages),
+                    "last_date": max(msg["processing_time"] for msg in messages),
+                }
             )
         )
 
-if __name__ == '__main__':
-    run()
+        # Output the results into BigQuery table.
+        _ = messages | "Write to Big Query" >> beam.io.WriteToBigQuery(
+            output_table, schema=SCHEMA
+        )
 
 
-# #
-# import argparse
-# import json
-# import apache_beam as beam
-# from apache_beam.options.pipeline_options import PipelineOptions, SetupOptions
-# from dataflow.common.masking_utils import mask_pii
+if __name__ == "__main__":
+    logging.getLogger().setLevel(logging.INFO)
 
-# class ParseMessage(beam.DoFn):
-#     def process(self, element):
-#         record = json.loads(element.decode('utf-8'))
-#         yield mask_pii(record)
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--output_table",
+        help="Output BigQuery table for results specified as: "
+        "PROJECT:DATASET.TABLE or DATASET.TABLE.",
+    )
+    parser.add_argument(
+        "--input_subscription",
+        help="Input PubSub subscription of the form "
+        '"projects/<PROJECT>/subscriptions/<SUBSCRIPTION>."',
+    )
+    parser.add_argument(
+        "--window_interval_sec",
+        default=60,
+        type=int,
+        help="Window interval in seconds for grouping incoming messages.",
+    )
+    args, beam_args = parser.parse_known_args()
 
-# def run(argv=None):
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument('--input_subscription', required=True)
-#     parser.add_argument('--output_table', required=True)
-#     known_args, pipeline_args = parser.parse_known_args(argv)
-
-#     pipeline_options = PipelineOptions(pipeline_args, streaming=True)
-#     pipeline_options.view_as(SetupOptions).save_main_session = True
-
-#     with beam.Pipeline(options=pipeline_options) as p:
-#         (p | 'ReadFromPubSub' >> beam.io.ReadFromPubSub(subscription=known_args.input_subscription)
-#            | 'ParseAndMask' >> beam.ParDo(ParseMessage())
-#            | 'WriteToBQ' >> beam.io.WriteToBigQuery(
-#                 known_args.output_table,
-#                 schema='EmployeeID:INTEGER,FirstName:STRING,LastName:STRING,Email:STRING',
-#                 write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND
-#             ))
-
-# if __name__ == '__main__':
-#     run()
+    run(
+        input_subscription=args.input_subscription,
+        output_table=args.output_table,
+        window_interval_sec=args.window_interval_sec,
+        beam_args=beam_args,
+    )
