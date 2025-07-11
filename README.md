@@ -1,3 +1,5 @@
+https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/dataflow/flex-templates/streaming_beam
+
 https://github.com/vigneshSs-07/Cloud-AI-Analytics/tree/main/Cloud_Composer
 ### issue 1: 
 rajasekhar_malyala@cloudshell:~/dataflow/Project (gcp-agent-garden)$ gcloud builds submit --config=cicd/cloudbuild.yaml
