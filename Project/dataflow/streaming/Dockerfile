@@ -11,7 +11,7 @@ COPY . /template
 # Copy pipeline code and requirements
 COPY dataflow/streaming/streaming_pipeline.py /template/
 COPY dataflow/common/masking_utils.py /template/common/
-COPY requirements.txt /template/
+COPY dataflow/streaming/* /template/
 
 # Install required system packages and Python dependencies
 RUN apt-get update && \
