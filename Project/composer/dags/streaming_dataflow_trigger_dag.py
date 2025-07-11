@@ -4,7 +4,7 @@ from datetime import datetime
 
 PROJECT_ID = "gcp-agent-garden"
 REGION = "europe-west1"
-TEMPLATE_GCS_PATH = "gs://getwellsoon-bucket-demo/templates/streaming_template.json"
+TEMPLATE_GCS_PATH = "gs://getwellsoon-bucket-demo/templates/streaming_pipeline.json"
 SUBSCRIPTION = f"projects/{PROJECT_ID}/subscriptions/getwellsoon-topic-sub"
 BQ_TABLE = f"{PROJECT_ID}:getwellsoon_dataset.customer_data"
 
