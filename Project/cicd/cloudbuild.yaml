@@ -58,13 +58,48 @@ steps:
         --parameters=output_table="gcp-agent-garden.getwellsoon_dataset.customer_data" \
         --network="https://www.googleapis.com/compute/v1/projects/gcp-agent-garden/global/networks/dataflow-vpc" \
         --subnetwork="https://www.googleapis.com/compute/v1/projects/gcp-agent-garden/regions/europe-west1/subnetworks/dataflow-subnet"
+
+############ Batch Job ##################
+steps:
+  # Step 1: Run Terraform
+  - name: hashicorp/terraform:1.6.6
+    id: terraform-apply
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        cd terraform
+        terraform init
+        terraform apply -auto-approve
+        terraform output -raw dataflow_template_bucket > /workspace/BKT_NAME.txt
+
+  # Step 2: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: '.'
+    args:
+      [
+        'build',
+        '-f', 'dataflow/batch/Dockerfile',
+        '-t', 'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-batch-pii',
+        '.'
+      ]
+
+  # Step 3: Push Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-batch-pii'
+      ]
+
+  
   # Step 5: Upload Composer DAG
   # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   #   entrypoint: bash
   #   args:
   #     - -c
   #     - |
-  #       gsutil cp composer/dags/streaming_dataflow_trigger_dag.py  gs://europe-west1-composer-env-f-a3c19900-bucket/dags/
+  #       gsutil cp composer/dags/batch_dataflow_trigger_dag.py  gs://europe-west1-composer-env-f-a3c19900-bucket/dags/
 
 timeout: 1800s
 
