@@ -92,7 +92,23 @@ steps:
         'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-batch-pii'
       ]
 
-  
+# step4: Flex Build
+ - name:  'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        BUCKET=$(cat /workspace/BKT_NAME.txt)
+        echo "Using bucket: $$BUCKET"
+        gcloud dataflow flex-template build gs://$$BUCKET/getting_started_py.json \
+      --image-gcr-path  europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-beam-pii \
+      --sdk-language "PYTHON" \
+      --flex-template-base-image "PYTHON3" \
+      --py-path "." \
+      --metadata-file "metadata.json" \
+      --env "FLEX_TEMPLATE_PYTHON_PY_FILE=batch_beam.py" 
+      --env "FLEX_TEMPLATE_PYTHON_REQUIREMENTS_FILE=requirements.txt"
+      
   # Step 4: Upload Composer DAG
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
