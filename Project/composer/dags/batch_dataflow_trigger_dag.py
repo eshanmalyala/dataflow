@@ -27,7 +27,7 @@ with DAG(
         bash_command="""
               gcloud dataflow flex-template run "flex-`date +%Y%m%d-%H%M%S`" \
                 --template-file-gcs-location "gs://getwellsoon-bucket-demo/templates/getting_started_py.json" \
-                --region $REGION \
+                --region europe-west1 \
                 --parameters output="gs://getwellsoon-bucket-demo/templates/output-`date +%Y%m%d-%H%M%S`"
                     """,
     )
