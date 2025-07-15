@@ -1,77 +1,78 @@
-steps:
-  # Step 1: Run Terraform
-  - name: hashicorp/terraform:1.6.6
-    id: terraform-apply
-    entrypoint: sh
-    args:
-      - -c
-      - |
-        cd terraform
-        terraform init
-        terraform apply -auto-approve
-        terraform output -raw dataflow_template_bucket > /workspace/BKT_NAME.txt
+####### Streaming JOB ###########
+# steps:
+#   # Step 1: Run Terraform
+#   - name: hashicorp/terraform:1.6.6
+#     id: terraform-apply
+#     entrypoint: sh
+#     args:
+#       - -c
+#       - |
+#         cd terraform
+#         terraform init
+#         terraform apply -auto-approve
+#         terraform output -raw dataflow_template_bucket > /workspace/BKT_NAME.txt
 
-  # Step 2: Build Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    dir: '.'
-    args:
-      [
-        'build',
-        '-f', 'dataflow/streaming/Dockerfile',
-        '-t', 'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii',
-        '.'
-      ]
+#   # Step 2: Build Docker image
+#   - name: 'gcr.io/cloud-builders/docker'
+#     dir: '.'
+#     args:
+#       [
+#         'build',
+#         '-f', 'dataflow/streaming/Dockerfile',
+#         '-t', 'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii',
+#         '.'
+#       ]
 
-  # Step 3: Push Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      [
-        'push',
-        'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii'
-      ]
+#   # Step 3: Push Docker image
+#   - name: 'gcr.io/cloud-builders/docker'
+#     args:
+#       [
+#         'push',
+#         'europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii'
+#       ]
 
-  # Step 4: Build Flex Template
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        BUCKET=$(cat /workspace/BKT_NAME.txt)
-        echo "Using bucket: $$BUCKET"
-        gcloud dataflow flex-template build gs://$$BUCKET/templates/streaming_pipeline.json \
-        --image europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii \
-        --sdk-language PYTHON \
-        --metadata-file dataflow/streaming/metadata.json \
-        --temp-location gs://$$BUCKET/tmp
+#   # Step 4: Build Flex Template
+#   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#     entrypoint: bash
+#     args:
+#       - -c
+#       - |
+#         BUCKET=$(cat /workspace/BKT_NAME.txt)
+#         echo "Using bucket: $$BUCKET"
+#         gcloud dataflow flex-template build gs://$$BUCKET/templates/streaming_pipeline.json \
+#         --image europe-west1-docker.pkg.dev/gcp-agent-garden/streaming-registry/dataflow-streaming-pii \
+#         --sdk-language PYTHON \
+#         --metadata-file dataflow/streaming/metadata.json \
+#         --temp-location gs://$$BUCKET/tmp
 
-  # Step : Run Dataflow Flex Template
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        BUCKET=$(cat /workspace/BKT_NAME.txt)
-        echo "Using bucket: $$BUCKET"
-        gcloud dataflow flex-template run "streaming-beam-$(date +%Y%m%d-%H%M%S)"  \ 
-        --template-file-gcs-location="gs://getwellsoon-bucket-demo/templates/streaming_pipeline.json"  \
-        --region="europe-west1"   --parameters=input_subscription="projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub"  \ 
-        --parameters=output_table="gcp-agent-garden.getwellsoon_dataset.customer_data" \
-        --network="https://www.googleapis.com/compute/v1/projects/gcp-agent-garden/global/networks/dataflow-vpc" \
-        --subnetwork="https://www.googleapis.com/compute/v1/projects/gcp-agent-garden/regions/europe-west1/subnetworks/dataflow-subnet"
+#   # Step : Run Dataflow Flex Template
+#   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#     entrypoint: bash
+#     args:
+#       - -c
+#       - |
+#         BUCKET=$(cat /workspace/BKT_NAME.txt)
+#         echo "Using bucket: $$BUCKET"
+#         gcloud dataflow flex-template run "streaming-beam-$(date +%Y%m%d-%H%M%S)"  \ 
+#         --template-file-gcs-location="gs://getwellsoon-bucket-demo/templates/streaming_pipeline.json"  \
+#         --region="europe-west1"   --parameters=input_subscription="projects/gcp-agent-garden/subscriptions/getwellsoon-topic-sub"  \ 
+#         --parameters=output_table="gcp-agent-garden.getwellsoon_dataset.customer_data" \
+#         --network="https://www.googleapis.com/compute/v1/projects/gcp-agent-garden/global/networks/dataflow-vpc" \
+#         --subnetwork="https://www.googleapis.com/compute/v1/projects/gcp-agent-garden/regions/europe-west1/subnetworks/dataflow-subnet"
 
 ############ Batch Job ##################
 steps:
-  # Step 1: Run Terraform
-  - name: hashicorp/terraform:1.6.6
-    id: terraform-apply
-    entrypoint: sh
-    args:
-      - -c
-      - |
-        cd terraform
-        terraform init
-        terraform apply -auto-approve
-        terraform output -raw dataflow_template_bucket > /workspace/BKT_NAME.txt
+  # # Step 1: Run Terraform
+  # - name: hashicorp/terraform:1.6.6
+  #   id: terraform-apply
+  #   entrypoint: sh
+  #   args:
+  #     - -c
+  #     - |
+  #       cd terraform
+  #       terraform init
+  #       terraform apply -auto-approve
+  #       terraform output -raw dataflow_template_bucket > /workspace/BKT_NAME.txt
 
   # Step 2: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
