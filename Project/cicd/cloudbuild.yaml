@@ -98,7 +98,7 @@ steps:
     entrypoint: bash
     args:
       - -c
-      - 
+      - |
           BUCKET=$(cat /workspace/BKT_NAME.txt)
           echo "Using bucket: $$BUCKET"
           gcloud dataflow flex-template build gs://$$BUCKET/getting_started_py.json \
