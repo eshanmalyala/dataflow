@@ -63,16 +63,16 @@
 ############ Batch Job ##################
 steps:
   # # Step 1: Run Terraform
-  # - name: hashicorp/terraform:1.6.6
-  #   id: terraform-apply
-  #   entrypoint: sh
-  #   args:
-  #     - -c
-  #     - |
-  #       cd terraform
-  #       terraform init
-  #       terraform apply -auto-approve
-  #       terraform output -raw dataflow_template_bucket > /workspace/BKT_NAME.txt
+  - name: hashicorp/terraform:1.6.6
+    id: terraform-apply
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        cd terraform
+        terraform init
+        terraform apply -auto-approve
+        terraform output -raw dataflow_template_bucket > /workspace/BKT_NAME.txt
 
   # Step 2: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
