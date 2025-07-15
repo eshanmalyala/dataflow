@@ -1,35 +1,26 @@
-import argparse
 import apache_beam as beam
+from apache_beam.io.textio import WriteToText
 from apache_beam.options.pipeline_options import PipelineOptions
-from common import masking_utils
 
-class MaskSensitiveData(beam.DoFn):
-    def process(self, element):
-        import json
-        record = json.loads(element)
-        record['email'] = masking_utils.mask_email(record.get('email', ''))
-        record['phone'] = masking_utils.mask_phone(record.get('phone', ''))
-        yield record
 
-def run():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--input_path', required=True)
-    parser.add_argument('--output_table', required=True)
-    args, pipeline_args = parser.parse_known_args()
+def write_to_cloud_storage(argv=None):
+    # Parse the pipeline options passed into the application.
+    class MyOptions(PipelineOptions):
+        @classmethod
+        # Define a custom pipeline option that specfies the Cloud Storage bucket.
+        def _add_argparse_args(cls, parser):
+            parser.add_argument("--output", required=True)
 
-    options = PipelineOptions(pipeline_args, save_main_session=True, streaming=False)
+    wordsList = ["1", "2", "3", "4"]
+    options = MyOptions()
 
-    with beam.Pipeline(options=options) as p:
+    with beam.Pipeline(options=options) as pipeline:
         (
-            p
-            | 'Read from GCS' >> beam.io.ReadFromText(args.input_path)
-            | 'Mask PII' >> beam.ParDo(MaskSensitiveData())
-            | 'Write to BQ' >> beam.io.WriteToBigQuery(
-                args.output_table,
-                write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND,
-                create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED
-            )
+            pipeline
+            | "Create elements" >> beam.Create(wordsList)
+            | "Write Files" >> WriteToText(options.output, file_name_suffix=".txt")
         )
 
-if __name__ == '__main__':
-    run()
+
+if __name__ == "__main__":
+    write_to_cloud_storage()
