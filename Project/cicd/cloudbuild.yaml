@@ -107,7 +107,7 @@ steps:
             --flex-template-base-image "PYTHON3" \
             --py-path "." \
             --metadata-file  dataflow/batch/metadata.json \
-            --env "FLEX_TEMPLATE_PYTHON_PY_FILE=batch_beam.py" 
+            --env "FLEX_TEMPLATE_PYTHON_PY_FILE=batch_beam.py" \
             --env "FLEX_TEMPLATE_PYTHON_REQUIREMENTS_FILE=requirements.txt"
         
   # Step 4: Upload Composer DAG
