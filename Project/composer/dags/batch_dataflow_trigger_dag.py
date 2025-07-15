@@ -26,9 +26,9 @@ with DAG(
         task_id='run_dataflow_batch_flex_template_job',
         bash_command="""
               gcloud dataflow flex-template run "flex-`date +%Y%m%d-%H%M%S`" \
-                --template-file-gcs-location "gs://$BUCKET/getting_started_py.json" \
+                --template-file-gcs-location "gs://getwellsoon-bucket-demo/templates/getting_started_py.json" \
                 --region $REGION \
-                --parameters output="gs://$BUCKET/output-"
+                --parameters output="gs://getwellsoon-bucket-demo/templates/output-`date +%Y%m%d-%H%M%S`"
                     """,
     )
 
