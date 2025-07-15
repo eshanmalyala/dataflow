@@ -1,11 +1,9 @@
-FROM apache/beam_python3.11_sdk:latest
+FROM gcr.io/dataflow-templates-base/python3-template-launcher-base
+#ENV FLEX_TEMPLATE_PYTHON_REQUIREMENTS_FILE="/template/requirements.txt"
+ENV FLEX_TEMPLATE_PYTHON_PY_FILE="/template/batch_beam.py"
 
-WORKDIR /dataflow/template
+COPY . /template
 
-COPY batch_pipeline.py .
-COPY ../common/masking_utils.py common/masking_utils.py
+ENV PIP_NO_DEPS=True
 
-RUN pip install --upgrade pip && \
-    pip install google-cloud-storage google-cloud-bigquery
-
-ENTRYPOINT ["python", "batch_pipeline.py"]
+ENTRYPOINT ["/opt/google/dataflow/python_template_launcher"]
